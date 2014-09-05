@@ -1,0 +1,8 @@
+ros-indigo-jackal-description (0.1.0-0saucy) saucy; urgency=high
+
+  * Updated description with v0.9 hardware changes.
+  * Contributors: Mike Purvis
+
+ -- Mike Purvis <mpurvis@clearpathrobotics.com>  Fri, 05 Sep 2014 04:00:00 -0000
+
+
