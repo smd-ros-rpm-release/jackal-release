@@ -1,8 +1,0 @@
-ros-indigo-jackal-msgs (0.1.0-0trusty) trusty; urgency=high
-
-  * New jackal_msgs package.
-  * Contributors: Mike Purvis
-
- -- Mike Purvis <mpurvis@clearpathrobotics.com>  Fri, 05 Sep 2014 04:00:00 -0000
-
-
