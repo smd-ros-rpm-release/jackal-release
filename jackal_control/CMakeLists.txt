@@ -1,12 +1,13 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(jackal_description)
+project(jackal_control)
 
 find_package(catkin REQUIRED COMPONENTS roslaunch)
 
 catkin_package()
 
-roslaunch_add_file_check(launch/description.launch)
+roslaunch_add_file_check(launch/control.launch)
+roslaunch_add_file_check(launch/teleop.launch)
 
-install(DIRECTORY meshes launch urdf
+install(DIRECTORY config launch
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
