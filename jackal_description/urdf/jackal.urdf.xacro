@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot name="robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="jackal" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <xacro:property name="PI" value="3.1415926535897931" />
 
   <xacro:property name="wheelbase" value="0.262" />
@@ -14,6 +14,8 @@
   <xacro:property name="chassis_width" value="0.310" /> 
   <xacro:property name="chassis_height" value="0.184" /> 
 
+  <xacro:property name="dummy_inertia" value="1e-09"/>
+
   <xacro:property name="mount_spacing" value="0.120" />
 
   <material name="dark_grey"><color rgba="0.2 0.2 0.2 1.0" /></material>
@@ -21,7 +23,8 @@
   <material name="black"><color rgba="0.15 0.15 0.15 1.0" /></material>
 
   <xacro:macro name="wheel" params="prefix *joint_pose">
-    <link name="${prefix}_wheel">
+
+    <link name="${prefix}_wheel_link">
       <visual>
         <origin xyz="0 0 0" rpy="${PI/2} 0 0"/>
         <geometry>
@@ -35,13 +38,38 @@
           <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
         </geometry>
       </collision>
+      <inertial>
+        <origin xyz="-0.0001 0 -0.00001" rpy="0 0 0"/>
+        <mass value="0.477"/>
+        <inertia
+          ixx="0.0024" ixy="0" ixz="0"
+          iyy="0.0013" iyz="0"
+          izz="0.0013"/>
+      </inertial>
     </link>
-    <joint name="${prefix}_wheel_joint" type="continuous">
-      <parent link="base_link"/>
-      <child link="${prefix}_wheel" />
+
+    <gazebo reference="${prefix}_wheel_link">
+      <material>Gazebo/DarkGrey</material>
+    </gazebo>
+
+    <joint name="${prefix}_wheel" type="continuous">
+      <parent link="chassis_link"/>
+      <child link="${prefix}_wheel_link" />
       <xacro:insert_block name="joint_pose" />
       <axis xyz="0 1 0" />
     </joint>
+
+    <!-- In reality, Jackal has only two motors, one per side. However, it's more
+         straightforward for Gazebo to simulate as if there's an actuator per wheel. -->
+    <transmission name="${prefix}_wheel_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}_wheel">
+        <hardwareInterface>VelocityJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${prefix}_actuator">
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
   </xacro:macro>
 
   <xacro:wheel prefix="front_left">
@@ -58,6 +86,28 @@
   </xacro:wheel>
 
   <link name="base_link">
+    <inertial>
+      <mass value="0.0001" />
+      <origin xyz="0 0 0" />
+      <inertia  ixx="0.0001" ixy="0.0" ixz="0.0"
+                iyy="0.0001" iyz="0.0"
+                izz="0.0001" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+      <box size="0.001 0.001 0.001" />
+    </geometry>
+    </visual>
+  </link>
+
+  <joint name="base_link_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="base_link"/>
+    <child link="chassis_link" />
+  </joint>
+
+  <link name="chassis_link">
     <visual>
       <origin xyz="0 0 ${footprint_vertical_offset}" rpy="${PI/2} 0 ${PI/2}"/>
       <geometry>
@@ -71,8 +121,18 @@
         <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
       </geometry>
     </collision>
+    <inertial>
+      <!-- Center of mass -->
+      <origin xyz="0.012  0.002 0.067" rpy="0 0 0"/>
+      <mass value="16.523"/> 
+      <!-- Moments of inertia: ( chassis without wheels ) -->
+      <inertia
+        ixx="0.3136" ixy="-0.0008" ixz="0.0164"
+        iyy="0.3922" iyz="-0.0009"
+        izz="0.4485"/>
+      </inertial>
   </link>
- 
+
   <link name="fenders_link">
     <visual>
       <origin xyz="0 0 ${footprint_vertical_offset}" rpy="${PI/2} 0 ${PI/2}"/>
@@ -82,21 +142,25 @@
       <material name="yellow" />
     </visual>
   </link>
-  <joint name="$fenders_joint" type="fixed">
-    <parent link="base_link" />
+  <joint name="fenders_joint" type="fixed">
+    <parent link="chassis_link" />
     <child link="fenders_link" />
-    <origin xyz="0 0 0" />
   </joint>
 
   <!-- TODO: Make this internal_imu_link or something, and use a mixed-in xacro
        to supply the joint between it and imu_link. This is important so that imu_link
        always points to the "active" IMU. When an upgrade IMU is connected, the
        internal_imu_link should remain, but imu_link should point to the upgrade one. -->
-  <link name="imu_link"></link>
+  <link name="imu_link">
+    <inertial>
+      <mass value="0.001"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="${dummy_inertia}" ixy="0.0" ixz="0.0" iyy="${dummy_inertia}" iyz="0.0" izz="${dummy_inertia}"/>
+    </inertial>
+  </link>
   <joint name="imu_joint" type="fixed">
-    <parent link="base_link" />
+    <parent link="chassis_link" />
     <child link="imu_link" />
-    <origin xyz="-0.1974 0.0314 0.163" />
   </joint>
 
   <!-- TODO: Same note as applies to imu_link -->
@@ -110,14 +174,14 @@
     </visual>
   </link>
   <joint name="navsat_joint" type="fixed">
-    <parent link="base_link" />
+    <parent link="chassis_link" />
     <child link="navsat_link" />
     <origin xyz="-0.180 0.126 0.1815" />
   </joint>
 
   <link name="mid_mount"></link>
   <joint name="mid_mount_joint" type="fixed">
-    <parent link="base_link" />
+    <parent link="chassis_link" />
     <child link="mid_mount" />
     <origin xyz="0 0 ${chassis_height}" />
   </joint>
@@ -135,4 +199,7 @@
     <child link="front_mount" />
     <origin xyz="${mount_spacing} 0 0" />
   </joint>
+
+  <!-- Bring in simulation data for Gazebo -->
+  <xacro:include filename="jackal.gazebo" />
 </robot>
