@@ -1,0 +1,32 @@
+ros-indigo-jackal-msgs (0.3.0-0trusty) trusty; urgency=high
+
+
+
+ -- Mike Purvis <mpurvis@clearpathrobotics.com>  Wed, 10 Sep 2014 04:00:00 -0000
+
+ros-indigo-jackal-msgs (0.2.1-0trusty) trusty; urgency=high
+
+
+
+ -- Mike Purvis <mpurvis@clearpathrobotics.com>  Wed, 10 Sep 2014 04:00:00 -0000
+
+ros-indigo-jackal-msgs (0.2.0-0trusty) trusty; urgency=high
+
+
+
+ -- Mike Purvis <mpurvis@clearpathrobotics.com>  Tue, 09 Sep 2014 04:00:00 -0000
+
+ros-indigo-jackal-msgs (0.1.1-0trusty) trusty; urgency=high
+
+
+
+ -- Mike Purvis <mpurvis@clearpathrobotics.com>  Sat, 06 Sep 2014 04:00:00 -0000
+
+ros-indigo-jackal-msgs (0.1.0-0trusty) trusty; urgency=high
+
+  * New jackal_msgs package.
+  * Contributors: Mike Purvis
+
+ -- Mike Purvis <mpurvis@clearpathrobotics.com>  Fri, 05 Sep 2014 04:00:00 -0000
+
+
