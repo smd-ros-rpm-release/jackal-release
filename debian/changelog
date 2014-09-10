@@ -1,0 +1,26 @@
+ros-indigo-jackal-control (0.3.0-0trusty) trusty; urgency=high
+
+
+
+ -- Mike Purvis <mpurvis@clearpathrobotics.com>  Wed, 10 Sep 2014 04:00:00 -0000
+
+ros-indigo-jackal-control (0.2.1-0trusty) trusty; urgency=high
+
+  * Depend on diff_drive_controller.
+  * Contributors: Mike Purvis
+
+ -- Mike Purvis <mpurvis@clearpathrobotics.com>  Wed, 10 Sep 2014 04:00:00 -0000
+
+ros-indigo-jackal-control (0.2.0-0trusty) trusty; urgency=high
+
+  * Add fork of diff_drive_controller.
+  * Fix run_depend elements.
+  * Fix remap for the interactive markers.
+  * New jackal_control package.
+    This is launchers and configuration common to simulated and real
+    Jackal, including controller, localization, and teleop.
+  * Contributors: Mike Purvis
+
+ -- Mike Purvis <mpurvis@clearpathrobotics.com>  Tue, 09 Sep 2014 04:00:00 -0000
+
+
