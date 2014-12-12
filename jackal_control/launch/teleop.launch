@@ -1,5 +1,6 @@
 <launch>
   <arg name="joy_dev" default="/dev/input/js0" />
+  <arg name="joystick" default="true" />
   
   <rosparam command="load" file="$(find jackal_control)/config/teleop.yaml" />
   
