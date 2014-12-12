@@ -1,0 +1,27 @@
+ros-indigo-jackal-diff-drive-controller (0.4.0-0trusty) trusty; urgency=high
+
+
+
+ -- Mike Purvis <mpurvis@clearpathrobotics.com>  Fri, 12 Dec 2014 05:00:00 -0000
+
+ros-indigo-jackal-diff-drive-controller (0.3.0-0trusty) trusty; urgency=high
+
+
+
+ -- Mike Purvis <mpurvis@clearpathrobotics.com>  Wed, 10 Sep 2014 04:00:00 -0000
+
+ros-indigo-jackal-diff-drive-controller (0.2.1-0trusty) trusty; urgency=high
+
+  * Remove changelog entries which were confusing dpkg.
+  * Contributors: Mike Purvis
+
+ -- Mike Purvis <mpurvis@clearpathrobotics.com>  Wed, 10 Sep 2014 04:00:00 -0000
+
+ros-indigo-jackal-diff-drive-controller (0.2.0-0trusty) trusty; urgency=high
+
+  * Add fork of diff_drive_controller.
+  * Contributors: Mike Purvis
+
+ -- Mike Purvis <mpurvis@clearpathrobotics.com>  Tue, 09 Sep 2014 04:00:00 -0000
+
+
